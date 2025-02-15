@@ -27,10 +27,11 @@ This is a configurable Tic Tac Toe game built using Java Spring Boot as the back
 6. Have a features to create and delete user (Can be improve)
 7. The structure it self is one to many (One user can have many games) and many to one on the Game (Many games can be had by one user)
 8. The application as for now might not work to run on local (As for now to play using api (Postman))
+9. I have implement the swagger config for the API Documentation however can be improved for further needs
 
 ---
 # Running the application
-Since it's using the H2 database so it will created automatically sets on the `application.properties` under `C:/Users/test` you can update the settings under the `spring.datasource.url` as for now the H2 database will re-create everytime the application start
+Since it's using the H2 database so it will created automatically sets on the `application.properties` under `C:/Users/<Username>` you can update the settings under the `spring.datasource.url` and change the `<Username>` into your path name as for now the H2 database will re-create everytime the application start
 
 1. Run the Application
 2. Access H2 Database (Open in console browser `http://localhost:8080/h2-console`)
@@ -43,3 +44,5 @@ Since it's using the H2 database so it will created automatically sets on the `a
 4. Play
 
 **The game might not working need to be checked for the further details**
+
+For Api documentation using swagger can be access through http://localhost:8080/swagger-ui/index.html#/
