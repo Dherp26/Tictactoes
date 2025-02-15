@@ -35,6 +35,7 @@ public class TicTacToeService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         gameBean.setGameId(UUID.randomUUID().toString());
         gameBean.setStatus(NEW);
+        gameBean.setBoardSize(users.getBoardSize());
 
         List<List<Character>> board = createBoard(users.getBoardSize());
         gameBean.setBoard(board);

@@ -1,39 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe </title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tic Tac Toe</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        #board { margin-top: 20px; display: inline-block; }
-        .cell { width: 50px; height: 50px; font-size: 24px; text-align: center; cursor: pointer; }
-        .cell:hover { background-color: lightgray; }
-        table { border-collapse: collapse; }
-        td { border: 2px solid black; width: 50px; height: 50px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #board {
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .cell {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .cell:hover {
+            background-color: lightgray;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 2px solid black;
+            width: 50px;
+            height: 50px;
+        }
     </style>
 </head>
 <body>
 <h1>Tic Tac Toe</h1>
 <label for="size">Board Size:</label>
-<input type="number" id="size" value="3" min="3">
-<button onclick="createGame()">Start Game</button>
+<input type="number" id="size" value="3" min="3"/>
+<button id="btnStartGame">Start Game</button>
 <div id="board"></div>
 
 <script>
     let gameId;
     let boardSize = 3;
+    let body;
+
+    const btnStartGame = document.getElementById("btnStartGame");
+    btnStartGame.addEventListener("click", createGame);
 
     function createGame() {
         boardSize = document.getElementById("size").value;
-        axios.post("http://localhost:8080/game/create?player1=Player1&boardSize=${boardSize}")
-    .then(response => {
-            gameId = response.data.gameId;
-            drawBoard(response.data.board);
-        })
-            .catch(error => {
-                console.error('Error creating game:', error);
+        axios
+            .post(
+                `http://localhost:8080/api/tictactoe/game/create/1`, {
+                    // Replace with the actual data you want to send
+                    name: "tes",
+                    status: "new"
+                })
+            .then((data) => {
+                drawBoard(data.data.board);
+                gameId = data.data.gameId
+                body = data.data
+            })
+            .catch((error) => {
+                console.error("Error creating game:", error);
             });
     }
 
@@ -42,24 +78,28 @@
             alert("Start a game first!");
             return;
         }
-        axios.post("http://localhost:8080/game/${gameId}/move?row=${row}&col=${col}")
-            .then(response => {
-                alert(response.data);
+        axios
+            .post(
+                `http://localhost:8080/api/tictactoe/game/${body}/move?${row}&${col}`
+            )
+            .then((data) => {
+                alert(data.data);
                 loadGame();
             })
-            .catch(error => {
-                console.error('Error making move:', error);
+            .catch((error) => {
+                console.error("Error making move:", error);
             });
     }
 
     function loadGame() {
         if (!gameId) return;
-        axios.get("http://localhost:8080/game/${gameId}")
-            .then(response => {
-                drawBoard(response.data.board);
+        axios
+            .get(`http://localhost:8080/api/tictactoe/game/${gameId}`)
+            .then((data) => {
+                drawBoard(data.boardSize);
             })
-            .catch(error => {
-                console.error('Error fetching game state:', error);
+            .catch((error) => {
+                console.error("Error fetching game state:", error);
             });
     }
 
@@ -68,12 +108,22 @@
         for (let i = 0; i < board.length; i++) {
             html += "<tr>";
             for (let j = 0; j < board[i].length; j++) {
-                html += <td class="cell" onclick="makeMove(${i},${j})">${board[i][j]}</td>;
+                const cellId = "cell" + i + j;
+                html += `<td class="cell" id="${cellId}" >board${i}${j}</td>`;
+                // const cellEl = document.getElementById(cellId);
+                // cellEl.addEventListener("click", () => makeMove(i, j));
             }
             html += "</tr>";
         }
         html += "</table>";
         document.getElementById("board").innerHTML = html;
+
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
+                const cellEl = document.getElementById("cell" + i + j);
+                cellEl.addEventListener("click", () => makeMove(i, j));
+            }
+        }
     }
 </script>
 </body>

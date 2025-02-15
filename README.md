@@ -34,15 +34,25 @@ This is a configurable Tic Tac Toe game built using Java Spring Boot as the back
 Since it's using the H2 database so it will created automatically sets on the `application.properties` under `C:/Users/<Username>` you can update the settings under the `spring.datasource.url` and change the `<Username>` into your path name as for now the H2 database will re-create everytime the application start
 
 1. Run the Application
-2. Access H2 Database (Open in console browser `http://localhost:8080/h2-console`)
+2. Create user using postman hit
+   <br /> `localhost:8080/api/transaction/create`
+   <br />  with request body
+   <br />{
+   <br />"name" : "tes",
+   <br />"status" : "new"
+   <br />}
+
+3. Access H2 Database (Open in console browser `http://localhost:8080/h2-console`)
    <br />JDBC URL:
    <br />**Username**: sa
    <br />**Password**: (leave blank)
    <br />Click Connect, then run:
-3. Open your browser:
+4. Open your browser:
    <br />http://localhost:8080/index.html
-4. Play
+5. Play
 
 **The game might not working need to be checked for the further details**
-
+**Need to check logic for integration from Backend to FE**
+**As for now the logic for create board is still hardcode, need more improvement**
+![img.png](img.png)
 For Api documentation using swagger can be access through http://localhost:8080/swagger-ui/index.html#/

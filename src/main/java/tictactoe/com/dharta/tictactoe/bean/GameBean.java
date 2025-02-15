@@ -13,4 +13,5 @@ public class GameBean {
     private int score;
     private String status;
     private List<List<Character>> board;
+    private int boardSize;
 }
