@@ -53,6 +53,8 @@ Since it's using the H2 database so it will created automatically sets on the `a
 
 **The game might not working need to be checked for the further details**
 **Need to check logic for integration from Backend to FE**
-**As for now the logic for create board is still hardcode, need more improvement**
+
+
+## As for now the logic for create board is still hardcode, need more improvement
 ![img.png](img.png)
 <br />For Api documentation using swagger can be access through http://localhost:8080/swagger-ui/index.html#/
