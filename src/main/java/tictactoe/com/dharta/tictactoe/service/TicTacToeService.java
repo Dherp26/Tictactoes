@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static tictactoe.com.dharta.tictactoe.constant.Constant.*;
+import static tictactoe.com.dharta.tictactoe.mapper.GameMapper.convertBoardToString;
 
 @Service
 @RequiredArgsConstructor
@@ -28,18 +29,23 @@ public class TicTacToeService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
 
-    public GameBean createGame(UserBean user) {
+    public GameBean createGame(UserBean user, long id) {
         GameBean gameBean = new GameBean();
+        User users = userRepository.findByIdAndName(id, user.getName())
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND));
         gameBean.setGameId(UUID.randomUUID().toString());
-        gameBean.setPlayer1(user.getName());
         gameBean.setStatus(NEW);
 
-        List<List<Character>> board = createBoard(user.getBoardSize());
+        List<List<Character>> board = createBoard(users.getBoardSize());
         gameBean.setBoard(board);
-        Game game = gameRepository.save(GameMapper.toGameEntity(gameBean));
+        Game game = new Game();
+        game.setPlayer1(users);
+        game.setGameId(game.getGameId());
+        game.setBoard(convertBoardToString(gameBean.getBoard()));
+        gameRepository.save(game);
         log.debug(SAVE_SUCCESS_MESSAGE, game.getGameId());
 
-        return GameMapper.toGameBean(game);
+        return gameBean;
     }
 
     private List<List<Character>> createBoard(int size) {
@@ -83,7 +89,7 @@ public class TicTacToeService {
         char currentPlayer = game.getStatus().equals(IN_PROGRESS) ? 'X' : 'O';
 
         board.get(row).set(col, currentPlayer);
-        game.setBoard(GameMapper.convertBoardToString(board));
+        game.setBoard(convertBoardToString(board));
 
         if (checkWinner(board, row, col, currentPlayer)) {
             game.setWinner(currentPlayer == 'X' ? game.getPlayer1().getName() : game.getPlayer2().getName());

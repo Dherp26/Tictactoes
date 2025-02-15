@@ -15,10 +15,10 @@ import tictactoe.com.dharta.tictactoe.service.TicTacToeService;
 public class GameController {
     private final TicTacToeService ticTacToeService;
 
-    @PostMapping(value = "/create")
+    @PostMapping(value = "/create/{userId}")
     @ResponseBody
-    public GameBean createGame(@RequestBody UserBean userBean) {
-        return ticTacToeService.createGame(userBean);
+    public GameBean createGame(@RequestBody UserBean userBean, @PathVariable long userId) {
+        return ticTacToeService.createGame(userBean, userId);
     }
 
     @PostMapping("/{gameId}/connect")

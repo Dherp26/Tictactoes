@@ -25,7 +25,6 @@
     let gameId;
     let boardSize = 3;
 
-    // Create a new game using Axios
     function createGame() {
         boardSize = document.getElementById("size").value;
         axios.post("http://localhost:8080/game/create?player1=Player1&boardSize=${boardSize}")
@@ -64,7 +63,6 @@
             });
     }
 
-    // Render the board dynamically
     function drawBoard(board) {
         let html = "<table>";
         for (let i = 0; i < board.length; i++) {

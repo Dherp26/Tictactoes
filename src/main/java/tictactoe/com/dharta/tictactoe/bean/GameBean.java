@@ -9,8 +9,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class GameBean {
     private String gameId;
-    private String player1;
-    private String player2;
     private String winner;
     private int score;
     private String status;
